@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -40,11 +44,13 @@ jobs:
           ./gradlew assembleRelease --stacktrace --info
 
       - name: 📱 Upload APK to Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: app/build/outputs/apk/release/*.apk
+          name: "🎉 Pexels Photo Explorer ${{ github.ref_name }}"
+          tag_name: ${{ github.ref_name }}
           body: |
-            ## 🚀 What's New in this Release
+            ## 🚀 What's New in ${{ github.ref_name }}
             
             - 🔥 **Tinder-style photo discovery**: Swipe left/right to like or pass photos
             - 📸 **High-quality photos**: Browse curated photos from Pexels API
@@ -68,8 +74,13 @@ jobs:
             
             ### 🎬 Demo
             Watch it in action: https://www.youtube.com/shorts/4fWxj6M5tTU
+            
+            ### 📥 Assets
+            - **APK**: Ready to install Android app
+            - **Source Code**: Automatic GitHub source archives
           
           draft: false
           prerelease: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
