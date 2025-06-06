@@ -13,17 +13,31 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: ☕ Set up JDK 11
+      - name: ☕ Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
-      - name: 🔧 Setup Gradle
-        uses: gradle/gradle-build-action@v2
+      - name: 🔧 Setup Gradle Wrapper
+        run: |
+          chmod +x gradlew
+          chmod +x gradle/wrapper/gradle-wrapper.jar
+
+      - name: 📦 Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: 🏗️ Build Release APK
-        run: ./gradlew assembleRelease
+        run: |
+          ./gradlew clean
+          ./gradlew assembleRelease --stacktrace --info
 
       - name: 📱 Upload APK to Release
         uses: softprops/action-gh-release@v1
@@ -32,16 +46,28 @@ jobs:
           body: |
             ## 🚀 What's New in this Release
             
-            - 🔥 Tinder-style photo discovery
-            - 📸 High-quality photos from Pexels
-            - 🔍 Smart search functionality
-            - ❤️ Favorites management
-            - 🎨 Modern Material Design 3 UI
+            - 🔥 **Tinder-style photo discovery**: Swipe left/right to like or pass photos
+            - 📸 **High-quality photos**: Browse curated photos from Pexels API
+            - 🔍 **Smart search functionality**: Real-time search with history
+            - ❤️ **Favorites management**: Save and organize your liked photos
+            - 💾 **Smart filtering**: Never see the same photo twice
+            - 🎨 **Modern Material Design 3 UI**: Beautiful interface with smooth animations
+            
+            ### 🏗️ Technical Highlights
+            - Built with **100% Jetpack Compose**
+            - **Clean Architecture** + MVVM pattern
+            - **Room Database** for local storage
+            - **Paging 3** for efficient loading
+            - **Koin** dependency injection
             
             ### 📱 Installation
-            1. Download APK below
-            2. Install on Android 7.0+
-            3. Enjoy discovering photos!
+            1. Download APK from assets below
+            2. Enable "Install from Unknown Sources" in Android settings
+            3. Install APK on Android 7.0+ device
+            4. Enjoy discovering amazing photos!
+            
+            ### 🎬 Demo
+            Watch it in action: https://www.youtube.com/shorts/4fWxj6M5tTU
           
           draft: false
           prerelease: false
