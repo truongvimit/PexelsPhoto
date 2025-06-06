@@ -1,0 +1,49 @@
+name: 🚀 Release APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ☕ Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: 🔧 Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: 🏗️ Build Release APK
+        run: ./gradlew assembleRelease
+
+      - name: 📱 Upload APK to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app/build/outputs/apk/release/*.apk
+          body: |
+            ## 🚀 What's New in this Release
+            
+            - 🔥 Tinder-style photo discovery
+            - 📸 High-quality photos from Pexels
+            - 🔍 Smart search functionality
+            - ❤️ Favorites management
+            - 🎨 Modern Material Design 3 UI
+            
+            ### 📱 Installation
+            1. Download APK below
+            2. Install on Android 7.0+
+            3. Enjoy discovering photos!
+          
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Pexels Photo</string>
+
+    <!--    Translate-->
+    <string name="something_wrong">Something went wrong</string>
+    <string name="label_choose_email_app">Choose email app</string>
+    <string name="label_can_not_find_any_email_app">Can not find any email app!</string>
+    <string name="error_internet_connect">Please connect internet!</string>
+    <string name="title_permission_required">Permission Required</string>
+    <string name="description_permission_required">This app needs permission to function properly. Please grant it to continue.</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="title_permission_denied">Permission Denied</string>
+    <string name="label_grant_permission">Grant Permission</string>
+    <string name="description_permission_denied">You have permanently denied this permission. Please go to Settings to enable it manually.</string>
+    <string name="label_open_settings">Open Settings</string>
+</resources>
